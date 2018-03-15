@@ -35,7 +35,6 @@ services:
           - INSTALL_LARAVEL_ENVOY=${WORKSPACE_INSTALL_LARAVEL_ENVOY}
           - INSTALL_LARAVEL_INSTALLER=${WORKSPACE_INSTALL_LARAVEL_INSTALLER}
           - INSTALL_DEPLOYER=${WORKSPACE_INSTALL_DEPLOYER}
-          - INSTALL_PRESTISSIMO=${WORKSPACE_INSTALL_PRESTISSIMO}
           - INSTALL_LINUXBREW=${WORKSPACE_INSTALL_LINUXBREW}
           - INSTALL_MC=${WORKSPACE_INSTALL_MC}
           - INSTALL_SYMFONY=${WORKSPACE_INSTALL_SYMFONY}
@@ -75,7 +74,6 @@ services:
           - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
           - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
           - INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}
-          - INSTALL_IMAP=${PHP_FPM_INSTALL_IMAP}
           - INSTALL_MONGO=${PHP_FPM_INSTALL_MONGO}
           - INSTALL_AMQP=${PHP_FPM_INSTALL_AMQP}
           - INSTALL_MSSQL=${PHP_FPM_INSTALL_MSSQL}
@@ -429,7 +427,7 @@ services:
     beanstalkd-console:
       build: ./beanstalkd-console
       ports:
-        - "${BEANSTALKD_CONSOLE_HOST_PORT}:2080"
+        - "2080:2080"
       depends_on:
         - beanstalkd
       networks:
@@ -677,21 +675,6 @@ services:
         - redis
       networks:
         - frontend
-        - backend
-        
-### Solr Container #########################################
-
-    solr:
-      build:
-        context: ./solr
-        args:
-          - SOLR_VERSION=${SOLR_VERSION}
-          - SOLR_DATAIMPORTHANDLER_MYSQL=${SOLR_DATAIMPORTHANDLER_MYSQL}
-      volumes:
-        - ${DATA_SAVE_PATH}/solr:/opt/solr/server/solr/mycores
-      ports:
-        - "${SOLR_PORT}:8983"
-      networks:
         - backend
 
 ### AWS EB-CLI ####

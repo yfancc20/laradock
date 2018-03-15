@@ -270,7 +270,7 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
 ARG INSTALL_SWOOLE=false
 RUN if [ ${INSTALL_SWOOLE} = true ]; then \
     # Install Php Swoole Extension
-    pecl -q install -f swoole-1.10.1 && \
+    pecl -q install swoole-2.0.11 && \
     echo "extension=swoole.so" >> /etc/php/5.6/mods-available/swoole.ini && \
     ln -s /etc/php/5.6/mods-available/swoole.ini /etc/php/5.6/cli/conf.d/20-swoole.ini \
 ;fi
@@ -321,7 +321,7 @@ ENV NPM_REGISTRY ${NPM_REGISTRY}
 ENV NVM_DIR /home/laradock/.nvm
 RUN if [ ${INSTALL_NODE} = true ]; then \
     # Install nvm (A Node Version Manager)
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash && \
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash && \
         . $NVM_DIR/nvm.sh && \
         nvm install ${NODE_VERSION} && \
         nvm use ${NODE_VERSION} && \
@@ -474,19 +474,6 @@ ENV INSTALL_DEPLOYER ${INSTALL_DEPLOYER}
 RUN if [ ${INSTALL_DEPLOYER} = true ]; then \
     # Install the Deployer
     composer global require "deployer/deployer" \
-;fi
-
-#####################################
-# Prestissimo:
-#####################################
-USER laradock
-
-ARG INSTALL_PRESTISSIMO=false
-ENV INSTALL_PRESTISSIMO ${INSTALL_PRESTISSIMO}
-
-RUN if [ ${INSTALL_PRESTISSIMO} = true ]; then \
-    # Install Prestissimo
-    composer global require "hirak/prestissimo" \
 ;fi
 
 #####################################
@@ -661,12 +648,6 @@ RUN if [ ${INSTALL_DUSK_DEPS} = true ]; then \
   && mv chromedriver /usr/local/bin/ \
   && rm chromedriver_linux64.zip \
 ;fi
-
-#####################################
-# Check PHP version:
-#####################################
-
-RUN php -v | head -n 1 | grep -q "PHP 5.6."
 
 #
 #--------------------------------------------------------------------------

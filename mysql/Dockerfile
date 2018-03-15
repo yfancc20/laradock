@@ -1,4 +1,4 @@
-ARG MYSQL_VERSION=latest
+ARG MYSQL_VERSION=8.0
 FROM mysql:${MYSQL_VERSION}
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>

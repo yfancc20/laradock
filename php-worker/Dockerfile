@@ -4,9 +4,10 @@
 #--------------------------------------------------------------------------
 #
 
-FROM php:7.2-alpine
+ARG PHP_VERSION=${PHP_VERSION}
+FROM php:${PHP_VERSION}-alpine
 
-MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+LABEL maintainer="Mahmoud Zalt <mahmoud@zalt.me>"
 
 RUN apk --update add wget \
   curl \
@@ -21,7 +22,7 @@ RUN apk --update add wget \
   libgsasl-dev \
   supervisor
 
-RUN docker-php-ext-install mysqli mbstring pdo pdo_mysql tokenizer xml
+RUN docker-php-ext-install mysqli mbstring pdo pdo_mysql tokenizer xml pcntl
 RUN pecl channel-update pecl.php.net && pecl install memcached mcrypt-1.0.1 && docker-php-ext-enable memcached
 
 # Install PostgreSQL drivers:
@@ -62,7 +63,7 @@ ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
 #--------------------------------------------------------------------------
 #
 
-RUN php -v | head -n 1 | grep -q "PHP 7.2."
+RUN php -v | head -n 1 | grep -q "PHP ${PHP_VERSION}."
 
 #
 #--------------------------------------------------------------------------
